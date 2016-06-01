@@ -9,7 +9,8 @@
     "start": "[ \"$NODE_ENV\" != \"production\" ] && npm run watch || npm run build",
     "watch": "BABEL_ENV=webpack webpack-dev-server --hot",
     "build": "BABEL_ENV=webpack webpack --progress || true",
-    "test": "tape -r hops/shims/test '!(node_modules)/**/*.test.js' | faucet"
+    "test": "tape -r hops/shims/test '!(node_modules)/**/*.test.js' | faucet",
+    "docs": "rm -rf docs; jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "hops": "file:.."

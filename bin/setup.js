@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+/**
+ * @module setup
+ * @author Somebody <somebody@foo.bar>
+ */
 
 var fs = require('fs');
 var path = require('path');
@@ -10,7 +14,15 @@ var config = require('../lib/config');
 var pkgPath = path.resolve(config.appRoot, 'package.json');
 var pkg = require(pkgPath);
 
+/**
+ * default test string for comparison
+ * @type {String}
+ */
 var defaultTest = 'echo "Error: no test specified" && exit 1';
+/**
+ * hops test is used if no test is specified
+ * @type {String}
+ */
 var hopsTest = 'tape -r hops/shims/test \'!(node_modules)/**/*.test.js\' | faucet';
 
 Object.assign(pkg, {
@@ -19,7 +31,8 @@ Object.assign(pkg, {
     {
       start: '[ \"$NODE_ENV\" != "production" ] && npm run watch || npm run build',
       watch: 'BABEL_ENV=webpack webpack-dev-server --hot',
-      build: 'BABEL_ENV=webpack webpack || true'
+      build: 'BABEL_ENV=webpack webpack || true',
+      docs: 'rm -rf docs; jsdoc -c jsdoc.json'
     },
     pkg.scripts,
     {
@@ -37,7 +50,10 @@ var template = [{
   source: path.join(srcDir, '.eslintrc.js'),
   destination: path.join(config.appRoot, '.eslintrc.js')
 }, {
-  source: path.join(srcDir, '.stylelintrc.js'),
+  origin: path.join(srcDir, 'jsdoc.json'),
+  destination: path.join(config.appRoot, 'jsdoc.json')
+}, {
+  origin: path.join(srcDir, '.stylelintrc.js'),
   destination: path.join(config.appRoot, '.stylelintrc.js')
 }, {
   source: path.join(srcDir, 'webpack.config.js'),

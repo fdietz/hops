@@ -1,5 +1,6 @@
 tmp
 coverage
+docs
 node_modules
 npm-debug.log
 .DS_Store
