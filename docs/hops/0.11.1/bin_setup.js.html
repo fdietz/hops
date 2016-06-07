@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>bin/setup.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a><ul class='methods'><li data-type='method'><a href="module-browser.html#.render">render</a></li></ul></li><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~getSourceDir">getSourceDir</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a></li><li><a href="module-store.html">store</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">bin/setup.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>#!/usr/bin/env node
+/**
+ * @module setup
+ * @author Somebody &lt;somebody@foo.bar>
+ */
+
+var fs = require('fs');
+var path = require('path');
+
+var shell = require('shelljs');
+
+var config = require('../lib/config');
+
+var pkgPath = path.resolve(config.appRoot, 'package.json');
+var pkg = require(pkgPath);
+
+var defaultTest = 'echo "Error: no test specified" &amp;&amp; exit 1';
+var hopsTest = 'tape -r hops/shims/test \'!(node_modules)/**/*.test.js\' | faucet';
+
+Object.assign(pkg, {
+  main: (shell.test('-e', pkg.main)) ? pkg.main : 'src/main.js',
+  scripts: Object.assign(
+    {
+      start: '[ \"$NODE_ENV\" != "production" ] &amp;&amp; npm run watch || npm run build',
+      watch: 'BABEL_ENV=webpack webpack-dev-server --hot --inline',
+      build: 'BABEL_ENV=webpack webpack || true'
+    },
+    pkg.scripts,
+    {
+      test: (pkg.scripts.test === defaultTest) ? hopsTest : pkg.scripts.test
+    }
+  ),
+  babel: Object.assign({ extends: 'hops/etc/babel' }, pkg.babel)
+});
+
+var appDir = path.resolve(__dirname, '..', 'app');
+var template = [{
+  origin: path.join(appDir, 'src', 'main.js'),
+  destination: path.join(config.appRoot, pkg.main)
+}, {
+  origin: path.join(appDir, 'src', 'main.test.js'),
+  destination: path.join(config.srcDir, 'main.test.js')
+}, {
+  origin: path.join(appDir, 'src', 'style.css'),
+  destination: path.join(config.srcDir, 'style.css')
+}, {
+  origin: path.join(appDir, '.eslintrc.js'),
+  destination: path.join(config.appRoot, '.eslintrc.js')
+}, {
+  origin: path.join(appDir, '.stylelintrc.js'),
+  destination: path.join(config.appRoot, '.stylelintrc.js')
+}, {
+  origin: path.join(appDir, 'webpack.config.js'),
+  destination: path.join(config.appRoot, 'webpack.config.js')
+}];
+
+function configure() {
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+  shell.echo('updated package.json');
+}
+
+function bootstrap() {
+  template.forEach(function (file) {
+    if (!shell.test('-e', file.destination)) {
+      var destDir = path.dirname(file.destination);
+      shell.mkdir('-p', destDir);
+      shell.cp('-r', file.origin, destDir);
+      shell.echo('created ' + file.destination.replace(destDir + '/', ''));
+    }
+  });
+}
+
+function isBootstrapped() {
+  var index = template.findIndex(function (file) {
+    return shell.test('-e', file.destination);
+  });
+  return index >= 0;
+}
+
+function isDevInstall() {
+  return path.resolve(__dirname, '..') === config.appRoot;
+}
+
+function hasMain() {
+  return shell.test('-e', path.join(config.appRoot, pkg.main));
+}
+
+if (require.main === module &amp;&amp; !isBootstrapped() &amp;&amp; !isDevInstall()) {
+  configure();
+  bootstrap();
+}
+
+exports.configure = configure;
+exports.bootstrap = bootstrap;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Jun 07 2016 15:59:59 GMT+0200 (CEST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

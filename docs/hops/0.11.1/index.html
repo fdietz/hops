@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a><ul class='methods'><li data-type='method'><a href="module-browser.html#.render">render</a></li></ul></li><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~getSourceDir">getSourceDir</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a></li><li><a href="module-store.html">store</a></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><p align="center">
+  <img
+    width="200"
+    height="217"
+    src="https://github.com/xing/hops/blob/master/logo.png?raw=true"
+  />
+</p>
+
+<h1 align="center">Hops UI Toolbox</h1>
+
+<p align="center">
+  <a href="https://travis-ci.org/xing/hops">
+    <img src="https://travis-ci.org/xing/hops.svg?branch=master">
+  </a>
+  <a href="https://david-dm.org/xing/hops">
+    <img src="https://david-dm.org/xing/hops.svg">
+  </a>
+</p>
+<p>&nbsp;</p>
+
+<p>In this repo, we are experimenting with technology that might serve as our next generation front end technology stack: hops spices our brew (i.e. web front end) with <a href="https://babeljs.io">ECMAScript</a> and <a href="http://flowtype.org">Flow</a>, <a href="http://cssnext.io">CSS Next</a> and <a href="https://github.com/css-modules/css-modules">CSS Modules</a>, <a href="https://facebook.github.io/jsx/">JSX</a>/<a href="https://facebook.github.io/react/">React</a> and <a href="https://facebook.github.io/flux/">Flux</a>/<a href="http://redux.js.org">Redux</a>. To get an impression take a look at our <a href="https://github.com/xing/hops/tree/master/app">example app</a>.</p>
+<p>Hops is not yet another boilerplate. Hops is a self-contained but highly extensible development and build environment that is packaged as a single module. Batteries included.</p>
+<h3>Install</h3><p>Besides recent versions of <a href="https://nodejs.org/en/">Node.js</a> and <a href="https://www.npmjs.com">npm</a>, hops has no global dependencies. If you need those, we recommend using <a href="https://github.com/creationix/nvm">nvm</a> or similar.</p>
+<pre class="prettyprint source"><code>mkdir foo && cd foo
+npm init -y
+npm install -SE hops</code></pre><p>A postinstall script will attempt to bootstrap and configure the project hops is being installed to: after installation, you can instantly start developing.</p>
+<h3>Running</h3><p>For developing with hops, you can use any decent editor with up-to-date language support. Those without a favorite we recommend <a href="https://atom.io">Atom</a> with the <a href="https://atom.io/packages/linter">linter</a>, <a href="https://atom.io/packages/linter-eslint">linter-eslint</a> and <a href="https://atom.io/packages/linter-stylelint">linter-stylelint</a> plugins.</p>
+<pre class="prettyprint source"><code>npm start (--production)</code></pre><p>If called without the <code>--production</code> flag, a development server with hot module replacement is started. In production mode, a static build is initialized.</p>
+<h3>Testing</h3><p>If you are developing any kind of real application, you certainly want to be able to test your code. For hops, we chose to include a rather simple testing toolchain consisting of <a href="https://github.com/substack/tape">Tape</a> and <a href="http://airbnb.io/enzyme/">Enzyme</a>.</p>
+<pre class="prettyprint source"><code>npm test</code></pre><p>In hops' default configuration, all files with names ending with <code>.test.js</code> (and outside <code>/node_modules</code>) are being picked up.</p>
+<h3>API</h3><h4>render(options: object): function|undefined</h4><p><code>render()</code> is hops' main function: it creates a <a href="https://github.com/reactjs/redux">Redux</a> store, sets up <a href="https://github.com/reactjs/react-router">React Router</a> and handles rendering both in the browser and in node. Using it is mandatory and its output must be the default export of your main module. And it's a little magic.</p>
+<pre class="prettyprint source lang-javascript"><code>import { render } from 'hops';
+
+import { routes } from './routes';
+
+export default render({ routes });</code></pre><p>In addition to <code>routes</code> and <code>reducers</code>, an html <code>mountPoint</code> selector and some othes may be passed as options. Please check the <a href="https://github.com/xing/hops/blob/master/lib/defaults.js">defaults</a> for some details.</p>
+<h4>register(namespace: string[, reducer: function]): object</h4><p><code>register()</code> is a helper to streamline store/state interactions in hops based projects. If passed only a <code>namespace</code> string, a generic reducer using React's <a href="https://facebook.github.io/react/docs/update.html">immutability helpers</a> is created for that namespace. It's return value is an object containing a selector function for use in ReactRedux' <code>connect()</code> and a generic action creator (<code>update()</code>) working with the update reducer.</p>
+<pre class="prettyprint source lang-javascript"><code>import { register } from 'hops';
+
+export const { select, update } = register('foo');</code></pre><p>Hops supports server-side data fetching for route components: it calls their static <code>fetchData</code> methods and expects them to return promises. Of course, asynchronous actions are supported by using <a href="https://github.com/gaearon/redux-thunk">thunks</a>.</p>
+<h3>Thanks!</h3><p>The beautiful hops icon used in the logo was created by <a href="https://thenounproject.com/fusionary/">The Crew at Fusionary</a> and provided via <a href="https://thenounproject.com/term/hops/9254/">The Noun Project</a>. It is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/us/">Creative Commons</a> license.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Jun 07 2016 15:59:59 GMT+0200 (CEST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
