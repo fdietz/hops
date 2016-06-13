@@ -32,7 +32,7 @@ export const { select, update } = register('home');
 
 /**
  * simple hello hops
- * @const Home
+ * @class Home
  */
 export const Home = connect(select, { update })(
   // create a React class with display name and propTypes
@@ -51,6 +51,7 @@ export const Home = connect(select, { update })(
      * @method Home/componentDidMount
      * @name componentDidMount
      * @alias Home/componentDidMount
+     * @memberof module:src/main~Home
      * @private
      */
     componentDidMount() {
@@ -60,9 +61,10 @@ export const Home = connect(select, { update })(
      * render the view
      * @method render
      * @private
+     * @memberof module:src/main~Home
      * @return {HTMLElement}         returns an h1 with the headline styles.
      *                               the geeting is internaly set when the component
-     *                               is mounted {@link module:src/main~componentDidMount}
+     *                               is mounted {@link module:src/main~Home.componentDidMount}
      */
     render() {
       return (
