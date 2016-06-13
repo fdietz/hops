@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>plugin/index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav class="main-nav">
+    <header class="nav-header"><h2><a href="index.html">Home</a></h2></header><header class="nav-header"><h3><span>Modules</span></h3></header><ul><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-lib_browser.html">lib/browser</a><ul class='methods'><li data-type='method'><a href="module-lib_browser.html#.render">render</a></li></ul></li><li><a href="module-lib_store.html">lib/store</a><ul class='methods'><li data-type='method'><a href="module-lib_store.html#~createReducer">createReducer</a></li><li data-type='method'><a href="module-lib_store.html#~createSelector">createSelector</a></li><li data-type='method'><a href="module-lib_store.html#~createStore">createStore</a></li><li data-type='method'><a href="module-lib_store.html#~getDevTools">getDevTools</a></li><li data-type='method'><a href="module-lib_store.html#~getReducers">getReducers</a></li><li data-type='method'><a href="module-lib_store.html#~getType">getType</a></li></ul></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a></li></ul>
+</nav>
+
+<main id="main" class="main-content">
+    <section>
+    <h1 class="page-title">plugin/index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module Plugin
+ * @author Somebody &lt;somebody@foo.bar>
+ */
+
+var fs = require('fs');
+var path = require('path');
+
+var vm = require('vm');
+var util = require('util');
+
+var webpack = require('webpack');
+var MemoryFS = require('memory-fs');
+var ejs = require('ejs');
+
+function createScript(fileContent, funcName) {
+  return vm.createScript(util.format(
+    '(function () { %s; return %s; })()',
+    fileContent.toString(),
+    funcName
+  )).runInNewContext({
+    require: require,
+    process: Object.assign({}, process, {
+      env: Object.assign(process.env, {
+        NODE_ENV: 'production'
+      })
+    }),
+    console: console,
+    global: {}
+  });
+}
+
+function createRenderer(options) {
+  return Promise.resolve().then(function () {
+    return new Promise(function (resolve, reject) {
+      var mfs = new MemoryFS();
+      var config = require(options.config);
+      var compiler = webpack(config);
+      compiler.outputFileSystem = mfs;
+      compiler.run(function(compilerError) {
+        /* istanbul ignore if */
+        if (compilerError) { reject(compilerError); }
+        else {
+          var filePath = path.join(config.output.path, config.output.filename);
+          mfs.readFile(filePath, function (readFileError, fileContent) {
+            /* istanbul ignore if */
+            if (readFileError) { reject(readFileError); }
+            else { resolve(createScript(fileContent, config.output.library)); }
+          });
+        }
+      });
+    });
+  });
+}
+
+function getFileName(location) {
+  var parts = location.split('/').filter(function (part) {
+    return !!part.length;
+  });
+  if (!parts.length || parts[parts.length - 1].indexOf('.') === -1) {
+    parts.push('index.html');
+  }
+  return path.join.apply(path, parts);
+}
+
+function getAssetPaths(assets, pfx) {
+  return function (ext) {
+    var regexp = new RegExp(util.format('^(?!(%s)).+\\.%s(?:\\?|$)', pfx, ext));
+    return Object.keys(assets).filter(function (key) {
+      return key.search(regexp) > -1;
+    });
+  };
+}
+
+function Plugin(options) {
+  this.options = Object.assign(
+    {
+      locations: ['/'],
+      template: path.resolve(__dirname, './template.ejs'),
+      config: path.resolve(__dirname, '../etc/webpack.node'),
+      chunkPrefix: 'chunk-'
+    },
+    options
+  );
+}
+
+Plugin.prototype.apply = function(compiler) {
+  var options = this.options;
+  var renderHTML = ejs.compile(
+    fs.readFileSync(this.options.template, 'utf-8')
+  );
+  compiler.plugin('emit', function(compilation, callback) {
+    var getPaths = getAssetPaths(compilation.assets, options.chunkPrefix);
+    createRenderer(options)
+    .then(function (renderReact) {
+      return Promise.all(options.locations.map(function (location) {
+        return renderReact(location, options)
+        .then(function (result) {
+          var html = renderHTML(Object.assign({}, options, result, {
+            js: getPaths('js'),
+            css: getPaths('css')
+          }));
+          compilation.assets[getFileName(location)] = {
+            source: function() { return html; },
+            size: function() { return html.length; }
+          };
+        });
+      }));
+    })
+    .catch(function () {
+      /* istanbul ignore if */
+      if (options.debug) {
+        console.log.apply(console, arguments); // eslint-disable-line no-console
+      }
+    })
+    .then(function () { callback(); });
+  });
+};
+
+Plugin.createRenderer = createRenderer;
+Plugin.getFileName = getFileName;
+
+module.exports = Plugin;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    </section>
+</main>
+
+
+<footer class="main-footer">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Jun 13 2016 18:17:45 GMT+0200 (CEST) using the hopsdoc theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

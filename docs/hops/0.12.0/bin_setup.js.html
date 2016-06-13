@@ -10,7 +10,6 @@
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
 <body>
@@ -22,12 +21,12 @@
 
 <label for="nav-trigger" class="overlay"></label>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a><ul class='methods'><li data-type='method'><a href="module-browser.html#.render">render</a></li></ul></li><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~getSourceDir">getSourceDir</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a></li><li><a href="module-store.html">store</a></li></ul>
+<nav class="main-nav">
+    <header class="nav-header"><h2><a href="index.html">Home</a></h2></header><header class="nav-header"><h3><span>Modules</span></h3></header><ul><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-lib_browser.html">lib/browser</a><ul class='methods'><li data-type='method'><a href="module-lib_browser.html#.render">render</a></li></ul></li><li><a href="module-lib_store.html">lib/store</a><ul class='methods'><li data-type='method'><a href="module-lib_store.html#~createReducer">createReducer</a></li><li data-type='method'><a href="module-lib_store.html#~createSelector">createSelector</a></li><li data-type='method'><a href="module-lib_store.html#~createStore">createStore</a></li><li data-type='method'><a href="module-lib_store.html#~getDevTools">getDevTools</a></li><li data-type='method'><a href="module-lib_store.html#~getReducers">getReducers</a></li><li data-type='method'><a href="module-lib_store.html#~getType">getType</a></li></ul></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a></li></ul>
 </nav>
 
-<div id="main">
-    
+<main id="main" class="main-content">
+    <section>
     <h1 class="page-title">bin/setup.js</h1>
     
 
@@ -54,7 +53,15 @@ var config = require('../lib/config');
 var pkgPath = path.resolve(config.appRoot, 'package.json');
 var pkg = require(pkgPath);
 
+/**
+ * default test string for comparison
+ * @type {String}
+ */
 var defaultTest = 'echo "Error: no test specified" &amp;&amp; exit 1';
+/**
+ * hops test is used if no test is specified
+ * @type {String}
+ */
 var hopsTest = 'tape -r hops/shims/test \'!(node_modules)/**/*.test.js\' | faucet';
 
 Object.assign(pkg, {
@@ -62,8 +69,9 @@ Object.assign(pkg, {
   scripts: Object.assign(
     {
       start: '[ \"$NODE_ENV\" != "production" ] &amp;&amp; npm run watch || npm run build',
-      watch: 'BABEL_ENV=webpack webpack-dev-server --hot --inline',
-      build: 'BABEL_ENV=webpack webpack || true'
+      watch: 'BABEL_ENV=webpack webpack-dev-server --hot',
+      build: 'BABEL_ENV=webpack webpack || true',
+      docs: 'rm -rf docs; jsdoc -c jsdoc.json'
     },
     pkg.scripts,
     {
@@ -73,24 +81,21 @@ Object.assign(pkg, {
   babel: Object.assign({ extends: 'hops/etc/babel' }, pkg.babel)
 });
 
-var appDir = path.resolve(__dirname, '..', 'app');
+var srcDir = path.resolve(__dirname, '..', 'app');
 var template = [{
-  origin: path.join(appDir, 'src', 'main.js'),
-  destination: path.join(config.appRoot, pkg.main)
+  source: path.join(srcDir, 'src'),
+  destination: path.join(config.appRoot, 'src')
 }, {
-  origin: path.join(appDir, 'src', 'main.test.js'),
-  destination: path.join(config.srcDir, 'main.test.js')
-}, {
-  origin: path.join(appDir, 'src', 'style.css'),
-  destination: path.join(config.srcDir, 'style.css')
-}, {
-  origin: path.join(appDir, '.eslintrc.js'),
+  source: path.join(srcDir, '.eslintrc.js'),
   destination: path.join(config.appRoot, '.eslintrc.js')
 }, {
-  origin: path.join(appDir, '.stylelintrc.js'),
+  origin: path.join(srcDir, 'jsdoc.json'),
+  destination: path.join(config.appRoot, 'jsdoc.json')
+}, {
+  origin: path.join(srcDir, '.stylelintrc.js'),
   destination: path.join(config.appRoot, '.stylelintrc.js')
 }, {
-  origin: path.join(appDir, 'webpack.config.js'),
+  source: path.join(srcDir, 'webpack.config.js'),
   destination: path.join(config.appRoot, 'webpack.config.js')
 }];
 
@@ -104,7 +109,7 @@ function bootstrap() {
     if (!shell.test('-e', file.destination)) {
       var destDir = path.dirname(file.destination);
       shell.mkdir('-p', destDir);
-      shell.cp('-r', file.origin, destDir);
+      shell.cp('-r', file.source, destDir);
       shell.echo('created ' + file.destination.replace(destDir + '/', ''));
     }
   });
@@ -117,15 +122,12 @@ function isBootstrapped() {
   return index >= 0;
 }
 
-function isDevInstall() {
-  return path.resolve(__dirname, '..') === config.appRoot;
-}
-
-function hasMain() {
-  return shell.test('-e', path.join(config.appRoot, pkg.main));
-}
-
-if (require.main === module &amp;&amp; !isBootstrapped() &amp;&amp; !isDevInstall()) {
+if (
+  require.main === module &amp;&amp;
+  path.resolve(__dirname, '..') !== config.appRoot &amp;&amp;
+  !shell.test('-e', path.join(config.appRoot, pkg.main)) &amp;&amp;
+  !isBootstrapped()
+) {
   configure();
   bootstrap();
 }
@@ -139,12 +141,13 @@ exports.bootstrap = bootstrap;
 
 
 
-</div>
 
-<br class="clear">
+    </section>
+</main>
 
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Jun 07 2016 15:59:59 GMT+0200 (CEST) using the Minami theme.
+
+<footer class="main-footer">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Jun 13 2016 18:17:45 GMT+0200 (CEST) using the hopsdoc theme.
 </footer>
 
 <script>prettyPrint();</script>

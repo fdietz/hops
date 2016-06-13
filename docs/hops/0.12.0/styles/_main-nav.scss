@@ -1,0 +1,120 @@
+.main-nav {
+    $header-level-color: $theme-fancy;
+    $first-level-color: #0080FF;
+    $method-color: #FFCC66;
+    $speed: 0.2s;
+
+    height: calc(100% - 50px);
+    flex: 0 0 250px;
+    background-color: #222;
+    color: #fff;
+    overflow: auto;
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        margin: 0;
+
+        &:hover > a {
+            text-decoration: none;
+
+            &:before {
+                transform: scale(1, 1);
+            }
+        }
+
+        > a {
+            display: block;
+            padding: 1rem 1rem;
+            font-weight: normal;
+            color: currentColor;
+            position: relative;
+            overflow: hidden;
+
+            &:before {
+                content: '';
+                position: absolute;
+                z-index: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 2px;
+                transition: transform $speed ease-in-out;
+                transform-origin: 50% 100%;
+            }
+
+            &:before {
+                background-color: $first-level-color;
+                transform: scale(0, 1);
+            }
+
+            &:visited {
+                color: currentColor;
+            }
+
+            &:hover {
+                &:before {
+                    transition-delay: $speed;
+                }
+            }
+        }
+
+        li > a {
+            padding-left: 1.5rem;
+        }
+
+        li li > a {
+            padding-left: 2rem;
+        }
+
+        &[data-type="method"] > a {
+            color: $method-color;
+
+            &:before {
+                background-color: $method-color;
+            }
+        }
+    }
+
+    .nav-header {
+        h1, h2, h3, h4 {
+            margin: 0;
+            font-weight: normal;
+
+            > a, > span {
+                color: currentColor;
+                display: block;
+                font-weight: normal;
+                padding: .5rem 1rem;
+                position: relative;
+            }
+
+            > a {
+                &:before {
+                    content: '';
+                    position: absolute;
+                    z-index: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 2px;
+                    transition: transform $speed ease-in-out;
+                    transform-origin: 50% 100%;
+                    background-color: $header-level-color;
+                    transform: scale(0, 1);
+                }
+
+                &:hover {
+                    text-decoration: none;
+
+                    &:before {
+                        transform: scale(1, 1);
+                    }
+                }
+            }
+        }
+    }
+}
