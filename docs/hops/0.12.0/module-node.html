@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>node - Documentation</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav class="main-nav">
-    <header class="nav-header"><h2><a href="index.html">Home</a></h2></header><header class="nav-header"><h3><span>Modules</span></h3></header><ul><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-lib_browser.html">lib/browser</a><ul class='methods'><li data-type='method'><a href="module-lib_browser.html#.render">render</a></li></ul></li><li><a href="module-lib_store.html">lib/store</a><ul class='methods'><li data-type='method'><a href="module-lib_store.html#~createReducer">createReducer</a></li><li data-type='method'><a href="module-lib_store.html#~createSelector">createSelector</a></li><li data-type='method'><a href="module-lib_store.html#~createStore">createStore</a></li><li data-type='method'><a href="module-lib_store.html#~getDevTools">getDevTools</a></li><li data-type='method'><a href="module-lib_store.html#~getReducers">getReducers</a></li><li data-type='method'><a href="module-lib_store.html#~getType">getType</a></li></ul></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a></li></ul>
+    <header class="nav-header"><h2><a href="index.html">Home</a></h2></header><header class="nav-header"><h3><span>Modules</span></h3></header><ul><li><a href="module-config.html">config</a><ul class='methods'><li data-type='method'><a href="module-config.html#~getFilePath">getFilePath</a></li><li data-type='method'><a href="module-config.html#~overrideConfig">overrideConfig</a></li></ul></li><li><a href="module-defaults.html">defaults</a></li><li><a href="module-lib_browser.html">lib/browser</a><ul class='members'><li data-type='member'><a href="module-lib_browser.html#.register">register</a></li></ul><ul class='methods'><li data-type='method'><a href="module-lib_browser.html#.render">render</a></li></ul></li><li><a href="module-lib_store.html">lib/store</a><ul class='members'><li data-type='member'><a href="module-lib_store.html#~createContext">createContext</a></li></ul><ul class='methods'><li data-type='method'><a href="module-lib_store.html#~createReducer">createReducer</a></li><li data-type='method'><a href="module-lib_store.html#~createSelector">createSelector</a></li><li data-type='method'><a href="module-lib_store.html#~createStore">createStore</a></li><li data-type='method'><a href="module-lib_store.html#~getDevTools">getDevTools</a></li><li data-type='method'><a href="module-lib_store.html#~getReducers">getReducers</a></li><li data-type='method'><a href="module-lib_store.html#~getType">getType</a></li></ul><ul class='typedefs'><li data-type='typedef'><a href="module-lib_store.html#~createActionCreator">createActionCreator</a></li><li data-type='typedef'><a href="module-lib_store.html#~register">register</a></li><li data-type='typedef'><a href="module-lib_store.html#~return">return</a></li></ul></li><li><a href="module-node.html">node</a><ul class='methods'><li data-type='method'><a href="module-node.html#~fetch">fetch</a></li><li data-type='method'><a href="module-node.html#~match">match</a></li><li data-type='method'><a href="module-node.html#~render">render</a></li></ul></li><li><a href="module-Plugin.html">Plugin</a></li><li><a href="module-setup.html">setup</a><ul class='members'><li data-type='member'><a href="module-setup.html#~defaultTest">defaultTest</a></li><li data-type='member'><a href="module-setup.html#~hopsTest">hopsTest</a></li></ul></li></ul>
 </nav>
 
 <main id="main" class="main-content">
@@ -69,16 +69,26 @@
 
         
             
-<article class="card card__function">
+<article class="card card__function" id="~fetch">
+
+
+<section class="code-source">
+  <div class="link-box">
+    
+    <a href="lib_node.js.html">lib/node.js</a> <a href="lib_node.js.html#line47">line 47</a>
+    
+  </div>
+</section>
+
 
     
-      <h2>fetch</h2>
+      <h2 >fetch</h2>
     
     <pre class="prettyprint"><code>"module:node~fetch"</code></pre>
     
         
 
-        <h4 class="name" id="~fetch"><span class="type-signature">(private, inner) </span>fetch<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+        <h4 class="name"><span class="type-signature">(private, inner) </span>fetch<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -99,6 +109,7 @@
     
         <h5>Parameters:</h5>
         
+<div class="table-scroll">
 
 <table class="params">
     <thead>
@@ -128,7 +139,9 @@
             <td class="type">
             
                 
-<span class="__tag param-type param-type-object">Object</span>
+<span class="__tag param-type param-type-object"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">Object</a>
+
+</span>
 
 
 
@@ -145,6 +158,7 @@
     
     </tbody>
 </table>
+</div>
 
     
 
@@ -175,13 +189,6 @@
 
     
 
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_node.js.html">lib/node.js</a>, <a href="lib_node.js.html#line47">line 47</a>
-    </li></ul></dd>
     
 
     
@@ -219,7 +226,9 @@
     <dd>
       <!--%= data.type.names ?-->
       
-<span class="__tag param-type param-type-promise">Promise</span>
+<span class="__tag param-type param-type-promise"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/promise" target="_blank">Promise</a>
+
+</span>
 
 
 
@@ -234,16 +243,26 @@
 
         
             
-<article class="card card__function">
+<article class="card card__function" id="~match">
+
+
+<section class="code-source">
+  <div class="link-box">
+    
+    <a href="lib_node.js.html">lib/node.js</a> <a href="lib_node.js.html#line21">line 21</a>
+    
+  </div>
+</section>
+
 
     
-      <h2>match</h2>
+      <h2 >match</h2>
     
     <pre class="prettyprint"><code>"module:node~match"</code></pre>
     
         
 
-        <h4 class="name" id="~match"><span class="type-signature">(private, inner) </span>match<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+        <h4 class="name"><span class="type-signature">(private, inner) </span>match<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -264,6 +283,7 @@
     
         <h5>Parameters:</h5>
         
+<div class="table-scroll">
 
 <table class="params">
     <thead>
@@ -293,7 +313,9 @@
             <td class="type">
             
                 
-<span class="__tag param-type param-type-object">Object</span>
+<span class="__tag param-type param-type-object"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">Object</a>
+
+</span>
 
 
 
@@ -310,6 +332,7 @@
     
     </tbody>
 </table>
+</div>
 
     
 
@@ -340,13 +363,6 @@
 
     
 
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_node.js.html">lib/node.js</a>, <a href="lib_node.js.html#line21">line 21</a>
-    </li></ul></dd>
     
 
     
@@ -384,7 +400,9 @@
     <dd>
       <!--%= data.type.names ?-->
       
-<span class="__tag param-type param-type-promise">Promise</span>
+<span class="__tag param-type param-type-promise"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/promise" target="_blank">Promise</a>
+
+</span>
 
 
 
@@ -399,16 +417,26 @@
 
         
             
-<article class="card card__function">
+<article class="card card__function" id="~render">
+
+
+<section class="code-source">
+  <div class="link-box">
+    
+    <a href="lib_node.js.html">lib/node.js</a> <a href="lib_node.js.html#line65">line 65</a>
+    
+  </div>
+</section>
+
 
     
-      <h2>render</h2>
+      <h2 >render</h2>
     
     <pre class="prettyprint"><code>"module:node~render"</code></pre>
     
         
 
-        <h4 class="name" id="~render"><span class="type-signature">(private, inner) </span>render<span class="signature">(options)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+        <h4 class="name"><span class="type-signature">(private, inner) </span>render<span class="signature">(options)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -429,6 +457,7 @@
     
         <h5>Parameters:</h5>
         
+<div class="table-scroll">
 
 <table class="params">
     <thead>
@@ -458,7 +487,9 @@
             <td class="type">
             
                 
-<span class="__tag param-type param-type-object">Object</span>
+<span class="__tag param-type param-type-object"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">Object</a>
+
+</span>
 
 
 
@@ -475,6 +506,7 @@
     
     </tbody>
 </table>
+</div>
 
     
 
@@ -505,13 +537,6 @@
 
     
 
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_node.js.html">lib/node.js</a>, <a href="lib_node.js.html#line65">line 65</a>
-    </li></ul></dd>
     
 
     
@@ -549,7 +574,9 @@
     <dd>
       <!--%= data.type.names ?-->
       
-<span class="__tag param-type param-type-object">Object</span>
+<span class="__tag param-type param-type-object"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">Object</a>
+
+</span>
 
 
 
@@ -580,7 +607,7 @@
 
 
 <footer class="main-footer">
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Jun 13 2016 18:17:45 GMT+0200 (CEST) using the hopsdoc theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Jun 13 2016 22:32:36 GMT+0200 (CEST) using the hopsdoc theme.
 </footer>
 
 <script>prettyPrint();</script>

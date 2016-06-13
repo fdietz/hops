@@ -113,14 +113,15 @@ ol.linenums {
 code {
     font-family: $monospace;
     padding: 0 .5em;
-    background: $theme-fancy;
-    color: $theme-fancy-rev;
+    background: $theme-code;
+    color: $theme-code-color;
     border-radius: 2px;
 }
 
 pre {
 
     padding: 1rem;
+    overflow: auto;
 
     code {
         padding: 0;
@@ -132,4 +133,4 @@ pre {
     }
 }
 
-@import "prettify-tomorrow";
+@import "prettify";
